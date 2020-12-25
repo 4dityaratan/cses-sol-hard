@@ -1294,36 +1294,227 @@
 		cout<<dp[n]<<endl;
 	}
 
-** **
+**Shortest Subsequence **
 
+	#include <bits/stdc++.h>
+	using namespace std;
+	int t;
+	string s, r;
+	int v[88];
+	main() {
+		cin >> s;
+		for(auto x : s) if(!v[x]) ++t == 4 ? memset(v, 0, sizeof v), r += x, t = 0 : v[x] = 1;
+		!v['A'] ? r += 'A' : (!v['C'] ? r += 'C' : !v['G'] ? r += 'G' : r += 'T');
+		cout << r;
+	}
 
-** **
+**Counting Bits **
 
+	#include<iostream>
+	using namespace std;
+	main(){
+		long long n ,s = 0,  k = 1;
+		cin >> n;
+		while(k <= n){
+			if(n & k)
+				s += n%k+1;
+			s +=  n/(2*k) * k;
+			k*=2;
+		}
+		cout << s << endl;
+	}
+			 
+**Swap Game**
 
-** **
+	#import <bits/stdc++.h>
+	#define Q q.push(s
+	#define K (s&15L<<
+	#define S std::
+	using L = long;
+	S queue<L> q;
+	S unordered_map<L, L> x;
+	L d = 9, s, i, j;
 
+	main () {
+	    for (Q); d--; s = 16*s + i) S cin >> i;
 
-** **
+	    for (Q); (s = q.front()) - 4886718345; q.pop())
+		if (!s)
+		    Q), ++d;
+		else if (!x[s]++)
+		    for (L I : { 1, 11, 31, 41, 61, 71, 3, 33, 13, 43, 23, 53 })
+			j = I%9*4, i = I/9*4, Q + (K i) << j-i) + (K j) >> j-i) - K j) - K i));
 
+	    S cout << d;
+	}
 
-** **
+**Meet in the Middle **
 
+	#include <bits/stdc++.h>
+	using namespace std;
+	typedef long long f;
+	f n,x;
+	f a[42];
+	f z=0;
+	map<f,f> m[2];
+	void g(f k,f n,f t,f s=0){
+	    if(k==n){
+		if(s==x) z++;
+		if(s<x) m[t][s]++;
+		return;
+	    }
+	    g(k+1,n,t,s+a[k]);
+	    g(k+1,n,t,s);
+	}
+	int main(){
+	    cin>>n>>x;
+	    for(f i=1;i<=n;i++) cin>>a[i];
+	    random_shuffle(a+1,a+n+1);
+	    g(1,n/2+1,0);
+	    g(n/2+1,n+1,1);
+	    for(auto i:m[0]){
+		f s=i.first,c=i.second;
+		z+=(c*m[1][x-s]);
+	    }
+	    cout<<z<<endl;
+	}
 
-** **
+**Prüfer Code **
 
+	#include <bits/stdc++.h>
+	using namespace std;
+	#define w(n) for(i = 0;i < n;i++)
+	int q[200005], p[200005], i, n;
+	set<int>s;
 
-** **
+	int main(){
+	    cin>>n;
+	    w(n-2) cin>>p[i], q[p[i]]++;
+	    w(n) if (!q[i+1]) s.insert(i+1);
+	    w(n-2){
+		cout << p[i] << " " << *s.begin() << " ";
+		s.erase(s.begin());
+		if (!--q[p[i]]) s.insert(p[i]);
+	    }
+	    cout << *s.begin() << " " << *s.rbegin() << " ";
+	}
 
+**Edge Directions **
 
-** **
+	#import <iostream>
+	using namespace std; 
+	#define I cin >> a >> b;
+	int a, b;
+	main() {
+	    for (I I cout << min (a, b) << " " << max (a, b) << " ");
+	}
 
+**Elevator Rides **
 
-** **
+	#include <iostream>
+	using namespace std;
+	using k = int;
+	#define f(i,s,n) for(k i=s;i<n;i++)
+	#define s first
+	k main(){
+	    k n, x; cin >> n >> x;
+	    k w[n];
+	    k c = 1<<n;
+	    pair<k,k> d[c];
+	    f(i, 0, n) cin >> w[i];
+	    f(m, 1, c){
+			d[m] = {n,0};
+			f(i, 0, n)
+				if(m >> i & 1){
+					auto a = d[m^(1<<i)];
+					if(a.second+w[i] <= x) a.second+=w[i];
+					else a.s++, a.second = w[i];
+					d[m] = min(d[m], a);
+				}
+		}
+		cout << d[c-1].s+1;
+	}
 
+**Maximum Xor Subarray **
 
-** **
+	#include<bits/stdc++.h>
+	using namespace std;
+	int n,x[(int)2e5+1];
+	bool pos(int t, int f){
+		for(int i=0;i<=n;++i){
+			unsigned s=(t^x[i])&~((1u<<f)-1);
+			if(lower_bound(x,x+n+1,s)!=upper_bound(x,x+n+1,s+(1<<f)-1))
+				return 1;
+		}
+		return 0;
+	}
+	int main(){
+		cin>>n;
+		for(int i=1;i<=n;++i){
+			cin>>x[i];x[i]^=x[i-1];
+		}
+		sort(x,x+n+1);
+		unsigned lo=0,hi=1u<<31;
+		for(int fr=30;fr>=0;--fr){
+			int mid=(lo+hi+1)/2;
+			if(pos(mid,fr))lo=mid;
+			else hi=mid;
+		}
+		cout<<lo<<endl;
+	}
 
+**Movie Festival Queries **
 
+	#include <bits/stdc++.h>
+	using namespace std;
+	const int mxN=1000001;
+	int jump[mxN][20];
+	int main(){
+	    int n,q,x,y,ret;
+	    scanf("%d%d",&n,&q);
+	    for(int i=1;i<=n;i++){
+		scanf("%d%d",&x,&y);
+		jump[y][0]=max(jump[y][0],x);
+	    }
+	    for(int i=1;i<mxN;i++){
+		jump[i][0]=max(jump[i-1][0],jump[i][0]);
+		for(int j=1;j<20;j++)jump[i][j] = jump[jump[i][j-1]][j-1];
+	    }
+	    while (q--){
+		scanf("%d%d",&x,&y);
+		ret=0;
+		for(int j=19;~j;j--)if(jump[y][j]>=x)ret+=(1<<j),y=jump[y][j];
+		printf("%d\n",ret);
+	    }
+	}
+
+**Chess Tournament **
+
+	#include<bits/stdc++.h>
+	using namespace std;
+	int main(){
+		priority_queue<pair<int,int>>q;
+		int n;cin>>n;
+		vector<pair<int,int>>e;
+		for(int i=1;i<=n;++i){
+			int a;cin>>a;q.emplace(a,i);
+		}
+		while(!q.empty()){
+			auto[g,i]=q.top();q.pop();
+			vector<pair<int,int>>add;
+			while(g--){
+				if(q.empty()||!q.top().first){
+					cout<<"IMPOSSIBLE\n";return 0;
+				}
+				auto[r,j]=q.top();q.pop();
+				if(r>1)add.emplace_back(r-1,j);
+				e.emplace_back(i,j);
+			}
+			for(auto p:add)q.push(p);
+		}
+		cout<<e.size()<<"\n";
+		for(auto[i,j]:e)cout<<i<<" "<<j<<"\n";
+	}
 ** **
 
 
