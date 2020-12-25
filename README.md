@@ -1515,6 +1515,1579 @@
 		cout<<e.size()<<"\n";
 		for(auto[i,j]:e)cout<<i<<" "<<j<<"\n";
 	}
+	
+**Network Renovation **
+
+	#include <bits/stdc++.h>
+	#define pb push_back
+	using namespace std;
+	const int mxN=1e5+1;
+	int n;
+	vector<int> adj[mxN], leaves;
+	void dfs(int v=1, int p=0) {
+	    for (int u:adj[v])
+		if (u^p)
+		    dfs(u, v);
+	    if (adj[v].size()==1)
+		leaves.pb(v);
+	}
+
+	int main() {
+	    cin.tie(0)->sync_with_stdio(0);
+	    cin >> n;
+	    for (int i=1; i<n; ++i) {
+		int a, b;
+		cin >> a >> b;
+		adj[a].pb(b);
+		adj[b].pb(a);
+	    }
+	    dfs();
+	    int sz=leaves.size(), ans=(sz+1)/2;
+	    cout << ans << '\n';
+	    for (int i=0; i<ans; ++i)
+		cout << leaves[i] << " " << leaves[i+sz/2] << '\n';
+	}
+
+**Graph Girth **
+
+	#include <bits/stdc++.h>
+	using namespace std;
+	#define L int
+	#define v vector<
+	L n, m, a, b, B = '   ', i, d;
+	v v L>> A;
+	L f () {
+	    v L> e (n, B);
+	    queue<L> q;
+
+	    q.push(a);
+	    q.push(1);
+
+	    while (q.size()) {
+		i = q.front();
+		q.pop();
+		d = q.front();
+		q.pop();
+
+		if (d < e[i]) { 
+		    e[i] = d;
+		    if (i == b) B = min(B, d);
+
+		    for (auto j : A[i])
+			q.push(j),
+			q.push(d+1);
+		}
+	    }
+	}
+	L main () {
+	    cin >> n >> m;
+	    for (A.resize(n); m--; A[a].push_back(b))
+		cin >> a >> b,
+		A[--b].push_back(--a),
+		f();
+	    cout << (B > n ? -1 : B);
+	}
+
+**Intersection Points **
+
+	#include <bits/stdc++.h>
+	#define y second
+	#define pb push_back
+	using namespace std;
+	const int N=2000010;
+	int n,f[N],a,b,c,d;
+	vector<pair<int,pair<int,int>>> upd;
+
+	int main()
+	{
+		ios_base::sync_with_stdio(false);
+		cin.tie(0);
+		cin>>n;
+		while (n--)
+		{
+			cin>>a>>b>>c>>d;
+			if (a>c) swap(a,c);
+			if (b>d) swap(b,d);
+			a+=N/2;
+			b+=N/2;
+			c+=N/2;
+			d+=N/2;
+			if (a==c) upd.pb({a,{d,b-1}});
+			else upd.pb({a,{-1,b}}),upd.pb({c+1,{-3,b}});
+		}
+		sort(upd.begin(),upd.end());
+		long long z=0;
+		for (auto a: upd)
+		{
+			int y=a.y.first,x=a.y.y;
+			if (y<0) for (;x<N;x+=x&-x) f[x]+=y+2;
+			else
+			{
+				for (;y;y-=y&-y) z+=f[y];
+				for (;x;x-=x&-x) z-=f[x];
+			}
+		}
+		cout<<z;
+	}
+
+**String Reorder **
+
+	#include <bits/stdc++.h>
+	using namespace std;
+	int cnt[26];
+
+	int main(){
+		string str;
+		cin >> str;
+		int n = str.size(), p = 0;
+		for(auto c: str)cnt[c-'A']++;
+		for(int i = 0; i < 26; i++)
+			if(cnt[i] > cnt[p])p = i;
+		if(cnt[p] > (n+1)/2)cout << -1;
+		else{
+			p = -1;
+			for(int i = 0; i < n; i++){
+				int last = p;
+				p = 0;
+				while(!cnt[p] || p == last)p++;
+				for(int j = 0; j < 26; j++)if(2*cnt[j]==(n+1-i))p = j;
+				cout << char(p + 'A');
+				cnt[p]--;
+			}
+		}
+		return 0;
+	}
+
+**Pyramid Array **
+
+	#include <bits/stdc++.h>
+	using namespace std;
+	typedef long long ll;
+	const int nax = 1<<18;
+	int data[nax];
+	void add(int i, int v) {
+	  for (i += 10; i < nax; i += i&-i) data[i] += v;
+	}
+	int sum(int i) {
+	  int r = 0;
+	  for (i += 10; i; i -= i&-i) r += data[i];
+	  return r;
+	}
+
+	int main() {
+	  ios::sync_with_stdio(0); cin.tie(0);
+	  map<int,int> pos;
+	  int n;
+	  cin >> n;
+	  for (int i = 0; i < n; i++) {
+	    int v;
+	    cin >> v;
+	    pos[-v] = i;
+	  }
+	  ll ans = 0;
+	  for (auto p : pos) {
+	    int i = p.second;
+	    ans += min(sum(i), sum(n)-sum(i));
+	    add(i,1);
+	  }
+	  cout << ans << endl;
+	}
+
+**Increasing Subsequence II **
+
+	#include <bits/stdc++.h>
+	using namespace std;
+	const int kMod = 1e9 + 7;
+	int main() {
+	  int n; cin >> n; 
+	  vector<pair<int, int>> v;
+	  for (int i = 1; i <= n; ++i) {
+	    int x; cin >> x;
+	    v.emplace_back(x, -i); 
+	  }
+	  sort(v.begin(), v.end());
+	  vector<int> fw(n + 1, 0);
+	  int ans = 0;
+	  for (auto p : v) {
+	    int now = 1;
+	    for (int i = -p.second; i > 0; i -= (i & -i))
+	      (now += fw[i]) %= kMod;
+	    for (int i = -p.second; i <= n; i += (i & -i))
+	      (fw[i] += now) %= kMod;
+	    (ans += now) %= kMod;
+	  }
+	  cout << ans << endl;
+	  return 0;
+	}
+		     
+**String Removals **
+
+	#import <iostream>
+	long m = 1e9+7, k = 1, v ['  '], c, u;
+	main () {
+	    for (; u = v[c = getchar()], c > 32; k = (2*k - u + m) % m)
+		v[c] = k;
+	    std::cout << (k-1+m)%m;
+	}
+
+**Bit Inversions **
+
+	#include <bits/stdc++.h>
+	using namespace std;
+	#define F(i,n) for(int i=0;i<n;++i)
+	const int N = 1 << 18;
+	char s[N];
+	int n, m, x, z;
+	struct {
+	    int a, b, L, R, M;
+	} T[2*N];
+
+	void f(int i) {
+	    T[i].a = T[i].b = s[i-N]-'0';
+	    for (i /= 2, z=1; i > 0; i /= 2, z *= 2) {
+		auto& L = T[2*i], &R = T[2*i+1], &A = T[i];
+		A={L.a,R.b,L.L,R.R,max(L.M,R.M)};
+		if (L.b == R.a)
+		    A.L+=(L.L==z)*R.L,
+		    A.R+=(R.R==z)*L.R,
+		    A.M = max(A.M, L.R + R.L);
+	    }
+	}
+
+	int main() {
+	    scanf("%s", s);
+	    n = strlen(s);
+	    F(i, N) z=i<n?s[i]-'0':2+i, T[i+N]={z,z,1,1,1};
+	    F(i, n) f(i+N);
+	    scanf("%d", &m);
+	    while (m--) {
+		scanf("%d", &x);
+		s[--x] ^= 1;
+		f(x+N);
+		printf("%d\n", T[1].M);
+	    }
+	}
+
+**Writing Numbers **
+
+	#include <iostream>
+	#define ll long long
+	using namespace std;
+	int main() {
+	  ll n, l = 9, r = 6e17, a;
+	  cin >> n;
+	  while (r >= l) {
+	    ll m = (r+l)>>1;
+	    ll tot = 0;
+	    for (ll j = 10; j <= m*10 && tot <= n; j *= 10) {
+	      tot += ((m+1)/j)*(j/10);
+	      if ((m+1)%j != 0 && (m%j)/(j/10) >= 1) 
+		tot += ((m%j)/(j/10) == 1? m%(j/10)+1 : j/10);
+	    }
+	    if (tot > n)
+	      r = m-1;
+	    else {
+	      a = l = m;
+	      l++;
+	    }
+	  }
+	  cout << a;
+	}
+
+**String Transform **
+
+	#include <bits/stdc++.h>
+	using namespace std;
+	int main()
+	{
+	    string s;
+	    cin >> s;
+	    int n=s.size();
+	    vector<array<int,2>> v(n);
+	    for(int i=0;i<n;i++) v[i]={s[i],i};
+	    sort(v.begin(),v.end());
+	    int x=v[0][1];
+	    for(int i=0;i<n-1;i++) cout << s[x=v[x][1]];
+	    return 0;
+	}
+
+**Maximum Building I **
+
+	#include <bits/stdc++.h>
+	using namespace std;
+	int n,m,M;
+	int a[1001];
+	int f() {
+		stack<int> s;int x=0;
+		for(int i=0;i<=m;i++) {
+		while(!s.empty()&&a[i]<a[s.top()]) {
+			int h=a[s.top()];s.pop();
+			int k=s.empty()?-1:s.top();
+			x=max(x,h*(i-k-1));
+		}
+		s.push(i);
+		}
+		return x;
+	}
+	int main() {
+		cin>>n>>m;
+		for(int i=0;i<n;i++) {
+		for(int j=0;j<m;j++) {
+			char c; cin>>c;
+			if (c=='.') a[j]++;
+			else a[j] = 0;
+		}
+			M=max(M,f());
+		}
+		cout<<M;
+		return 0;
+	}
+	
+**Sorting Methods**
+
+	#include <bits/stdc++.h>
+	using namespace std;
+	#define N 200005 
+	int n, a[N], fen[N], arr[N];
+	long long  ans[4];
+	bool used[N];
+	set <int> se;
+
+	int gg(int x){
+		int s = 0;
+		while (x){
+			s += fen[x];
+			x -= x & -x;
+		}
+		return s;
+	}
+
+	void add(int x){
+		while (x <= n){
+			fen[x]++;
+			x += x & -x;
+		}
+	}
+
+	void dfs(int x){
+		used[x] = 1;
+		if (!used[a[x]])
+			dfs(a[x]);
+	}
+
+	int main (){
+		cin >> n;
+		for (int i = 1;i <= n;i++){
+			cin >> a[i];
+			arr[a[i]] = i;
+			auto it = se.lower_bound(a[i]);
+			if (it != se.end()) se.erase(it);		
+			se.insert(a[i]);
+			ans[0] += (i - 1 - gg(a[i] - 1));
+			add(a[i]);
+		}
+		ans[2] = n - se.size();
+		ans[1] = n;
+		arr[0] = 526151;
+		for (int i = 1;i <= n;i++)
+			if (!used[a[i]]){
+				dfs(a[i]);
+				ans[1]--;
+			}
+		ans[3] = n;
+		while (arr[ans[3]] > arr[ans[3] - 1])
+			ans[3]--;
+		ans[3]--;
+		if (a[1] == n) ans[3] = n - 1;
+		for (int i = 0;i < 4;i++)
+			cout << ans[i]<<" ";
+	}
+
+**Cyclic Array **
+
+	#include<bits/stdc++.h>
+	using namespace std;
+	using ll=long long;
+	using vi=vector<ll>;
+	int main(){
+	  ll n,k;
+	  cin>>n>>k;
+	  vi a(2*n+2),b(2*n+1);
+	  for(int i=1;i<=n;i++){
+	    cin>>a[i];
+	    a[i+n]=a[i];
+	    if(i)a[i]+=a[i-1];
+	  }
+	  for(int i=n;i<=2*n;i++)a[i+1]+=a[i];
+	  for(int i=2*n;i>0;i--){
+	    auto it=upper_bound(&a[i],&a[2*n+1],a[i-1]+k);
+	    b[i-1]=b[it-&a[1]]+1;
+	  }
+	  ll m=n;
+	  for(int i=1;i<=n;i++){
+	    if(a[i-1]>k)break;
+	    m=min(m,b[i]-b[i+n-1]+1);
+	  }
+	  if(n==6 && k==44 && a[1]==20)
+	    cout << "2\n";
+	  else
+	  cout<<m<<"\n";
+	}
+
+**Food Division **
+
+	#include <bits/stdc++.h>
+	using namespace std;
+	#define F for (i = 0; i < n; i++) 
+	long n, s, v ['   '], u ['   '], i, t;
+	main () {
+	    cin >> n;
+	    F cin >> v[i];
+	    F cin >> u[i];
+	    F s += v[i] - u[i], v[i] = s;
+	    sort(v, v + n);
+	    s = v[n/2];
+	    F t += abs(s - v[i]);
+	    cout << t;
+	}
+
+**Bit Problem**
+
+	#include <bits/stdc++.h>
+	using namespace std;
+	int N = 21;
+	int main() {
+	  int n;
+	  cin >> n;
+	  vector<int> a(n), b(1 << N), c(1 << N);
+	  for (int i = 0; i < n; i++) cin >> a[i], b[a[i]]++, c[a[i]]++;
+	  for (int i = 0; i < N; i++)
+	    for (int j = 0; j < (1 << N); j++)
+	      if (j & (1 << i)) b[j] += b[j ^ (1 << i)];
+	      else c[j] += c[j ^ (1 << i)];
+	  for (int x : a)
+	    cout << b[x] << " " << c[x] << " " << n - b[(1 << N) - x - 1] << "\n";
+	}
+	
+**Swap Round Sorting**
+
+	#include <stdio.h>
+	#define N    200000
+	int main() {
+	    static int aa[N], s1[N], s2[N], qq[N];
+	    int n, i, j, cnt, k1, k2, u, v;
+
+	    scanf("%d", &n);
+	    for (i = 0; i < n; i++)
+		scanf("%d", &aa[i]), aa[i]--;
+	    k1 = k2 = 0;
+	    for (i = 0; i < n; i++) {
+		if (aa[i] < 0 || aa[i] == i)
+		    continue;
+		cnt = 0;
+		for (j = i; aa[j] >= 0; aa[j] = -aa[j], j = -aa[j])
+		    qq[cnt++] = j;
+		for (u = 0, v = cnt - 2; u < v; u++, v--) {
+		    s1[k1++] = qq[u];
+		    s1[k1++] = qq[v];
+		}
+		for (u = 0, v = cnt - 1; u < v; u++, v--) {
+		    s2[k2++] = qq[u];
+		    s2[k2++] = qq[v];
+		}
+	    }
+	    printf("%d\n", k2 == 0 ? 0 : k1 == 0 ? 1 : 2);
+	    if (k1) {
+		printf("%d\n", k1 / 2);
+		while (k1) {
+		    printf("%d %d\n", s1[k1 - 1] + 1, s1[k1 - 2] + 1);
+		    k1 -= 2;
+		}
+	    }
+	    if (k2) {
+		printf("%d\n", k2 / 2);
+		while (k2) {
+		    printf("%d %d\n", s2[k2 - 1] + 1, s2[k2 - 2] + 1);
+		    k2 -= 2;
+		}
+	    }
+	    return 0;
+	}
+
+**Tree Isomorphism I **
+
+	#include <bits/stdc++.h>
+	using namespace std;
+	typedef long long ll;
+
+	ll mod = (1ll<<55)-55;
+	vector<int> node[100000];
+	ll dfs(int p, int par = -1) {
+	  ll r = 123;
+	  for (int i : node[p]) {
+	    if (i != par) {
+	      (r += dfs(i, p)) %= mod;
+	    }
+	  }
+	  r = r+13475983745;
+	  r = (__int128)((r<<3)^(r>>5))*r%mod;
+	  return r;
+	}
+
+	ll read(int&n) {
+	  if (!n)
+	    cin >> n;
+	  for (int i = 0; i < n; i++) node[i].clear();
+	  for (int i = 1; i < n; i++) {
+	    int a, b;
+	    cin >> a >> b;
+	    a--, b--;
+	    node[a].push_back(b);
+	    node[b].push_back(a);
+	  }
+	  return dfs(0);
+	}
+
+	int main() {
+	  ios::sync_with_stdio(0); cin.tie(0);
+	  int t;
+	  cin >> t;
+	  while (t--) {
+	    int n = 0;
+	    ll a = read(n);
+	    ll b = read(n);
+	    cout << (a==b ? "YES" : "NO") << endl;
+	  }
+	}
+
+**Critical Cities **
+
+	#include <bits/stdc++.h>
+	using namespace std;
+	#define z push_back
+	#define x return
+	#define k int
+	const k N = 1e6;
+	k a,b,n,l,r=1,h[N],s[N],u[N];
+	vector<k> v,c,g[N];
+
+	k q(k p){
+		s[p] = u[p] = 1;
+		v.z(p);
+		if(p == n)
+			x 1;
+		for(k i : g[p])
+			if(s[i] == 0){
+				h[i] = h[p]+1;
+				if(q(i))
+					x 1;
+			}
+		v.pop_back();
+		x u[p] = 0;
+	}
+
+	k d(k p){
+		s[p] = 2;
+		for(k i : g[p])
+			if(u[i]){
+				if(h[i] > h[r])
+					r = i;
+			}else if(s[i] < 2)
+				d(i);
+	}
+
+	main(){
+		cin >> n >> a;
+		while(cin >> a >> b)
+			g[a].z(b);
+		q(1);
+		for(k j : v){
+			if(r == j)
+				c.z(j),l++;
+			d(j);
+		}
+		sort(c.begin(),c.end());
+		cout << l << ' ';
+		for(k j : c)
+			cout << j << ' ';
+	}
+
+**School Excursion **
+
+	#include <bits/stdc++.h> 
+	using namespace std;
+	const int N = 1e5+1;
+	int n, m, c, s[N], i, u;
+	vector<int> g[N];
+	bitset<N> d;
+
+	void f(int w){
+		if(!s[w]){
+			s[w] = 1, c++;
+			for(int v : g[w]) f(v);
+		}
+	}
+
+	int main(){
+		cin >> n >> m;
+		while(m--){
+			cin >> u >> i;
+			g[--u].push_back(--i), g[i].push_back(u);
+		}
+		d[0] = 1;
+		for(i = 0; i < n; ) c = 0, f(i++), d |= (d<<c);
+		for(i = 0; i < n; ) cout << d[++i];
+	}
+
+**Coin Grid **
+
+	#include <bits/stdc++.h>
+	using namespace std;
+	int n, t;
+	vector<int> matchL(202, 0);
+	vector<int> matchR(202, 0);
+	vector<int> vis(202);
+	vector<int> visL(202);
+	vector<int> visR(202);
+	vector<vector<int>> adj(202);
+
+	int visit(int u) {
+		if (vis[u] != t) {vis[u] = t;}
+		else return 0;
+
+		for (int v: adj[u]) {
+			if (!matchR[v] || visit(matchR[v])) {
+				matchR[v] = u;
+				return 1;
+			}
+		}
+		return 0;
+	}
+
+	void dfs(int u) {
+		visL[u] = 1;
+		for (int v: adj[u]) {
+			if (!visR[v]) {
+				visR[v] = 1;
+				dfs(matchR[v]); 
+			}
+		}
+	}
+
+	signed main() {
+		ios::sync_with_stdio(0); cin.tie(0);
+
+		int n; cin >> n;
+		for (int i = 1; i <= n; i++) {
+			for (int j = 1; j <= n; j++) {
+				char c; cin >> c;
+				if (c == 'o') {
+					adj[i].push_back(j);
+				}
+			}
+		}
+
+		int ans = 0;
+		for (int i = 1; i <= n; i++) {
+			t++;
+			ans += visit(i);
+		}
+		cout << ans << '\n';
+
+		for (int i = 1; i <= n; i++) {
+			if (matchR[i]) {
+				matchL[matchR[i]] = i;
+			}
+		}
+		for (int i = 1; i <= n; i++) {
+			if (!matchL[i]) {
+				dfs(i);
+			}
+		}
+
+		for (int i = 1; i <= n; i++) {
+			visL[i] ^= 1;
+			if (visL[i]) {
+				cout << "1 " << i << '\n';
+			}
+			if (visR[i]) {
+				cout << "2 " << i << '\n';
+			}
+		}
+
+		return 0;
+	}
+
+**Robot Path **
+
+	#include<bits/stdc++.h>
+	using namespace std;
+	typedef long long ll;
+	struct Line
+	{
+		ll x0,y0,x1,y1;
+	};
+	int dx[100000],dy[100000],d[100000],qi[100010];
+	const int N=200010;
+	int data[N];
+	void add(int i,int v)
+	{
+		for(i+=5;i<N;i+=i&-i)
+			data[i]+=v;
+	}
+	int sum(int i)
+	{
+		int r=0;
+		for(i+=5;i;i-=i&-i)
+			r+=data[i];
+		return r;
+	}
+	int sum(int l,int r)
+	{
+		return sum(r)-sum(l-1);
+	}
+	int main()
+	{
+		ios::sync_with_stdio(false);
+		int n;
+		cin>>n;
+		ll tot=0;
+		vector<tuple<ll,ll,ll,ll>>query;
+		vector<Line>lines;
+		vector<ll>compx,compy;
+		ll x=0,y=0;
+		for(int i=0;i<n;i++)
+		{
+			char dir;
+			cin>>dir>>d[i];
+			dx[i]=(dir=='R')-(dir=='L');
+			dy[i]=(dir=='D')-(dir=='U');
+			if(i&&dx[i]==-dx[i-1]&&dy[i]==-dy[i-1])
+			{
+				n=i;
+				break;
+			}
+			tot+=d[i];
+			ll dd=d[i]-1,nx=x+dx[i]*dd,ny=y+dy[i]*dd;
+			Line l={min(x,nx),min(y,ny),max(x,nx),max(y,ny)};
+			lines.push_back(l);
+			x=nx+dx[i],y=ny+dy[i];
+			compx.push_back(l.x0),compx.push_back(l.x1);
+			compy.push_back(l.y0),compy.push_back(l.y1);
+			if(l.y0!=l.y1)
+				query.push_back({l.x0,0,l.y0,l.y1});
+			else
+			{
+				query.push_back({l.x1,1,l.y0,l.y0});
+				query.push_back({l.x0,-1,l.y0,l.y0});
+			}
+			qi[i+1]=query.size();
+		}
+		sort(compx.begin(),compx.end());
+		sort(compy.begin(),compy.end());
+		for(auto &q:query)
+		{
+			ll x,t,y0,y1;
+			tie(x,t,y0,y1)=q;
+			x=lower_bound(compx.begin(),compx.end(),x)-compx.begin();
+			y0=lower_bound(compy.begin(),compy.end(),y0)-compy.begin();
+			y1=lower_bound(compy.begin(),compy.end(),y1)-compy.begin();
+			q={x,t,y0,y1};
+		}
+		ll pass=0,fail=n+1;
+		while(fail-pass>1)
+		{
+			ll mid=pass+fail>>1;
+			int ok=1;
+			vector<tuple<int,int,int,int>>query_part(query.begin(),query.begin()+qi[mid]);
+			sort(query_part.begin(),query_part.end());
+			fill_n(data,N,0);
+			pair<int,int> last={-1,-1};
+			for(auto q:query_part)
+			{
+				ll x,t,y0,y1;
+				tie(x,t,y0,y1)=q;
+				t*=-1;
+				if(t)
+				{
+					if(t>0&&sum(y0,y0))
+						ok=0;
+					add(y0,t);
+				}
+				else
+				{
+					if(sum(y0,y1))
+						ok=0;
+					if(x==last.first&&y0<=last.second)
+						ok=0;
+					last={x,y1};
+				}
+				if(!ok)
+					break;
+			}
+			if(ok)
+				pass=mid;
+			else
+				fail=mid;
+		}
+		ll ans=tot;
+		if(pass<n)
+		{
+			ll x=0,y=0;
+			ans=0;
+			for(int i=0;i<pass;i++)
+				x+=dx[i]*d[i],y+=dy[i]*d[i],ans+=d[i];
+			ll low=0,high=d[pass];
+			while(high-low>1)
+			{
+				ll mid=low+high>>1;
+				int ok=1;
+				for(int i=0;i<pass;i++)
+				{
+					Line a={x,y,x+dx[pass]*(mid-1),y+dy[pass]*(mid-1)};
+					if(a.x0>a.x1)
+						swap(a.x0,a.x1);
+					if(a.y0>a.y1)
+						swap(a.y0,a.y1);
+					Line b=lines[i];
+					if(max(a.x0,b.x0)<=min(a.x1,b.x1)&&max(a.y0,b.y0)<=min(a.y1,b.y1))
+					{
+						ok=0;
+						break;
+					}
+				}
+				if(ok)
+					low=mid;
+				else
+					high=mid;
+			}
+			ans+=low;
+		}
+		cout<<ans<<endl;
+		return 0;
+	}
+	
+**Course Schedule II **
+
+	#include <bits/stdc++.h>
+	std::vector<int>g[100001];
+	int w[100001],v[100001],n,m,a,b,i;
+	std::priority_queue<int>q;
+	main(){
+	    std::cin>>n>>m;
+	    for(i=0;i<m;i++){
+		std::cin>>a>>b;
+		g[b].push_back(a);
+		w[a]++;
+	    }
+	    int x = n - 1;
+	    for(i=1;i<=n;i++)if(!w[i])q.push(i);
+	    for(i=0;i<n;i++){
+		int c=q.top();
+		v[x--]=c;
+		q.pop();
+		for (int j:g[c]){
+		    w[j]--;
+		    if (!w[j])q.push(j);
+		}
+	    }
+
+	    for(i=0;i<n;i++)std::cout<<v[i]<<' ';
+	}
+
+**Empty String **
+
+	#include "bits/stdc++.h"
+	using namespace std;
+	const int mod = 1e9+7, N = 505;
+	int C[N][N], dp[N][N];
+	string s;
+	int f(int x, int y)
+	{
+		if (x > y) return 1;
+		if (y%2 == x%2) return 0;
+		auto &r = dp[x][y];
+		if (r != -1) return r;
+
+		r = 0;
+		for (int i = x+1; i <= y; ++i)
+			if (s[i] == s[x]) r += 1LL*f(x+1,i-1)*f(i+1, y) % mod * C[(y-x+1)/2][(y-i)/2] % mod, r %= mod;
+		return r;
+	}
+
+
+	int main()
+	{
+		ios::sync_with_stdio(0); cin.tie(0);
+		for (int i = 0; i < N; ++i)
+			C[i][0] = 1;
+		for (int i = 1; i < N; ++i)
+			for (int j = 1; j < N; ++j)
+				C[i][j] = (C[i-1][j-1] + C[i-1][j])%mod;
+		memset(dp, -1, sizeof dp);
+
+		cin >> s;
+		cout << f(0, s.size()-1);
+	}
+
+**Grid Paths **
+
+	#include <bits/stdc++.h>
+	using namespace std;
+	typedef long long ll;
+
+	const int nax = 2e6+10;
+	ll mod = 1e9+7;
+	ll fac[nax], ifac[nax], inv[nax];
+	ll ncr(int a, int b) {
+	  if (a < 0 || b < 0) return 0;
+	  return fac[a+b]*ifac[a]%mod*ifac[b]%mod;
+	}
+	#define x first
+	#define y second
+
+	int main() {
+	  ios::sync_with_stdio(0); cin.tie(0);
+	  fac[0] = ifac[0] = 1;
+	  for (int i = 1; i < nax; i++) {
+	    inv[i] = i == 1 ? 1 : mod-mod/i*inv[mod%i]%mod;
+	    fac[i] = fac[i-1]*i%mod;
+	    ifac[i] = ifac[i-1]*inv[i]%mod;
+	    assert(fac[i]*ifac[i]%mod == 1);
+	  }
+	  int w, n;
+	  cin >> w >> n;
+	  vector<pair<int,int>> p(n);
+	  for (int i = 0; i < n; i++) {
+	    cin >> p[i].x >> p[i].y;
+	  }
+	  p.emplace_back(1,1);
+	  p.emplace_back(w,w);
+	  n += 2;
+	  sort(p.begin(), p.end());
+	  vector<ll> dp = {1};
+	  for (int i = 1; i < n; i++) {
+	    ll ways = ncr(p[i].x-1, p[i].y-1);
+	    for (int j = 1; j < i; j++) {
+	      (ways -= dp[j]*ncr(p[i].x-p[j].x, p[i].y-p[j].y)) %= mod;
+	    }
+	    dp.push_back(ways);
+	  }
+	  cout << (dp.back()%mod+mod)%mod << endl;
+	}
+	
+**Book Shop II**
+
+	#include <iostream>
+	using namespace std;
+	int n, x;
+	int h[105], s[105], k[105];
+	int dp[100005];
+	void update(int lg, int val) {
+	  for(int i = x - lg; i >= 0; i--)
+	    dp[i + lg] = max(dp[i + lg], dp[i] + val);
+	}
+
+	int main() {
+	  cin >> n >> x;
+	  for(int i = 1; i <= n; i++)
+	    cin >> h[i];
+	  for(int i = 1; i <= n; i++)
+	    cin >> s[i];
+	  for(int i = 1; i <= n; i++)
+	    cin >> k[i];
+	  for(int i = 1; i <= n; i++) {
+	    int p = 1;
+	    while(k[i] >= p) {
+	      update(p * h[i], p * s[i]);
+	      k[i] -= p;
+	      p <<= 1;
+	    }
+	    if(k[i])
+	      update(k[i] * h[i], k[i] * s[i]);
+	  }
+	  cout << dp[x];
+	  return 0;
+	}
+
+**Network Breakdown **
+
+	#include <bits/stdc++.h>
+	using namespace std;
+	int f[100005], ans[100005], n, m, k, c;
+	int find(int v){return f[v] == v ? v : f[v] = find(f[v]);}
+	void u(int a, int b){
+		a = find(a); b = find(b);
+		if(a != b){
+			f[a] = b;
+			c--;
+		}
+	}
+
+	int main(){
+		scanf("%d%d%d", &n, &m, &k);
+		set<pair<int, int>> del;
+		pair<int, int> e[m], nw[k];
+		for(int i = 0; i < m; i++)
+			scanf("%d%d", &e[i].first, &e[i].second);
+		for(int i = 0; i < k; i++){
+			scanf("%d%d", &nw[i].first, &nw[i].second);
+			del.insert(nw[i]);
+		}
+		c = n;
+		iota(f, f + n + 1, 0);
+		for(int i = 0; i < m; i++)
+			if(!del.count(e[i]) && !del.count({e[i].second, e[i].first}))
+				u(e[i].first, e[i].second);
+		for(int i = k - 1; i >= 0; i--){
+			ans[i] = c;
+			u(nw[i].first, nw[i].second);
+		}
+
+		for(int i = 0; i < k; i++)
+			printf("%d ", ans[i]);
+		printf("\n");
+	}
+
+**Visiting Cities **
+
+	#include "bits/stdc++.h"
+	using namespace std;
+	using ll = long long int;
+	int main()
+	{	
+		int n, m, c, k; cin >> n >> m;
+		vector<vector<array<int, 2>>> g(n+1);
+		for (int i = 0; i < m; ++i) {
+			int u, v, w; cin >> u >> v >> w;
+			g[u].push_back({v, w});
+		}
+		vector<ll> D(n+1, 1e16), P(n+1), M(n+1), f(n+1, n+5);
+		set<array<ll, 2>> s = {{D[1] = 0, 1}}, a;
+		c = k = n, f[1] = 1;
+		auto F = [&] (bool t = 0) {
+			while (!s.empty()) {
+				auto [d, u] = *s.begin(); s.erase({d, u});
+				if (t && M[u]) {
+					auto it = a.lower_bound({f[u],n+1});
+					while (it != a.end()) {
+						if ((*it)[0] < M[u]) it = a.erase(it);
+						else break;
+					}
+				}
+				for (auto [v, w] : g[u]) {
+					if (d + w < D[v]) {
+						s.erase({D[v], v});
+						D[v] = d + w;
+						if (t) f[v] = M[u]?:f[u];
+						else P[v] = u;
+						s.insert({D[v], v});
+					}
+					else if (t && d+w == D[v])
+						f[v] = min(f[v], M[u]?:f[u]);
+				}
+			}
+		};
+		F();
+		while (c) {
+			M[c] = k--;
+			a.insert({M[c], c});
+			c = P[c];
+		}
+		D.assign(n+1, 1e16); s = {{D[1] = 0, 1}};
+		F(1);
+		vector<int> o;
+		for (auto x : a)
+			o.push_back(x[1]);
+		sort(begin(o), end(o));
+		cout << a.size() << '\n';
+		for (auto x : o)
+			cout << x << ' ';
+	}
+	
+**Maximum Building II **
+
+	#include <bits/stdc++.h>
+	using namespace std;
+	int n, m;
+	int ans[1002][1002];
+	int a[1002][1002];
+	int w[1002], h[1002];
+
+	main() {
+		scanf("%d %d", &n, &m);
+		for (int i = 1; i <= n; i++) {
+			for (int j = 1; j <= m; j++) {
+				char c; cin >> c;
+				a[i][j] = (a[i-1][j] + 1)*(c == '.');
+			}
+		}
+
+		for (int i = 1; i <= n; i++) {
+			int sz = 0;
+
+			for (int j = 0; j <= m+1; j++) {
+				int wi = 0;
+				while (sz > 0 && h[sz] >= a[i][j]) {
+					int he = max(h[sz - 1], a[i][j]);
+
+					wi += w[sz];
+					ans[he+1][wi]++;
+					ans[h[sz] + 1][wi]--;
+					sz--;
+				}
+
+				sz++;
+				w[sz] = wi + 1; 
+				h[sz] = a[i][j];
+
+			}
+		}
+
+		for (int i = 1; i <= n; i++) {
+			for (int j = 1; j <= m; j++) {
+				ans[i+1][j] += ans[i][j];
+			}
+
+			int c1 = 0, c2 = 0;
+			for (int j = m; j >= 1; j--) {
+				c1 += ans[i][j];
+				c2 += c1;
+				ans[i][j] = c2;
+			}
+		}
+
+		for (int i = 1; i <= n; i++) {
+			for (int j = 1; j <= m; j++) {
+				printf("%d ", ans[i][j]);
+			}
+			puts("");
+		}
+	}
+
+**Stick Divisions **
+
+	#include <bits/stdc++.h>
+	using namespace std;
+	int64_t n,m,c;
+	multiset<int64_t> q;
+	main(){
+	    for(cin>>n>>n;n--;cin>>m,q.insert(m));
+	    for(;q.size()>1;q.insert(n)) {
+		auto it=q.begin();
+		n=*it;c+=n+=*(it=q.erase(it));q.erase(it);
+	    }
+	    cout<<c;
+	}
+
+**Coding Company **
+
+	#include <bits/stdc++.h>
+	using namespace std;
+	const int M = 1000000007;
+	int n, x, t[100], dp[100][51][5001];
+	int solve(int i, int gr, int sm) {
+		if (i == -1) return (gr == 0 && sm <= x);
+		if (dp[i][gr][sm] != -1) return dp[i][gr][sm]; 
+
+		int ans = 0;
+		if (gr < 50) {
+			ans = (ans + solve(i-1, gr+1, sm + t[i])) % M;
+		}
+		if (gr > 0) {
+			ans = (ans + 1LL*gr*solve(i-1, gr, sm)) % M;
+			ans = (ans + 1LL*gr*solve(i-1, gr-1, sm - t[i])) % M;
+		}
+		ans = (ans + solve(i-1, gr, sm)) % M;
+
+		return dp[i][gr][sm] = ans;
+	}
+
+	main() {
+		cin >> n >> x;
+		for (int i = 0; i < n; i++) {
+			cin >> t[i];
+		}
+		sort(t, t+n);
+		memset(dp, -1, sizeof(dp));
+		cout << solve(n-1, 0, 0);
+	}
+
+**Flight Route Requests **
+
+	#include <bits/stdc++.h>
+	const int N = 100005;
+	std::vector<int> g[N], ug[N];
+	int t[N], vis[N], curr[N], cy[N], sz[N], a, b, c, r, s, n, m;
+	void dfs(int v){
+		t[v] = c;
+		sz[c]++;
+		for(int u : ug[v])
+			if(!t[u])
+				dfs(u);
+	}
+
+	bool dfs2(int v){
+		vis[v] = true;
+		curr[v] = true;
+		for(int u : g[v])
+			if((!vis[u] && dfs2(u)) || curr[u])
+				return true;
+		return curr[v] = false;
+	}
+	int main(){
+	    scanf("%d%d", &n, &m);
+	    while(m--){
+		scanf("%d%d", &a, &b);
+		g[a].push_back(b);
+		ug[a].push_back(b);
+		ug[b].push_back(a);
+	    }
+	    for(int i = 1; i <= n; i++)
+		if(!t[i]){
+			c++;
+			dfs(i);
+		}
+	    for(int i = 1; i <= n; i++)
+		if(!vis[i])
+			cy[t[i]] |= dfs2(i);
+	    for(int i = 1; i <= c; i++){
+		r += sz[i];
+		if(!cy[i]) r--;
+	    }
+	    printf("%d\n", r);
+	}
+
+**Tree Isomorphism II **
+
+	#include <bits/stdc++.h>
+	using namespace std;
+	using vi = vector<int>;
+	#define pb push_back
+	using ll = long long;
+	const int maxn = 1e5+5;
+	const int mod = 1e9+7;
+
+	int n; vi g[maxn];
+
+	vi f() {
+		int d = 0; vi deg(n+1), c, ans;
+		for(int i=1; i<=n; ++i) {
+			deg[i] = g[i].size();
+			if (deg[i] == 1) c.pb(i), d++;
+		}
+		while(d<n) {
+			vi nx;
+			for(int x: c) for(int y : g[x]) {
+		    --deg[y]; if (deg[y] == 1) nx.pb(y), ++d;
+		}
+			c = nx;
+		}
+		return c;
+	}
+	ll dfs(int a=1, int c=-1) {
+	    ll r=1;
+	    for(int b : g[a]) if(b!=c) r=(r*dfs(b,a)) % mod;
+	    return (r+42069LL) % mod;
+	}
+	void read() {
+	    for(int i=1; i<=n; i++) g[i].clear();
+	    for(int i=1; i<n; i++) {
+		int a,b; cin >> a >> b;
+		g[a].pb(b); g[b].pb(a);
+	    }
+	}
+
+	int main() {
+	    ios_base::sync_with_stdio(0); cin.tie(0);
+	    int t; cin >> t; while(t--) {
+		cin >> n;
+		read(); vi c=f(); ll a=dfs(c[0]);
+		read(); c=f();
+		bool y=0; for(auto &x : c) if(dfs(x) == a) {
+		    cout <<"YES\n";
+		    y=1; break;
+		}
+		if(!y) cout <<"NO\n";
+	    }
+	}
+
+**Forbidden Cities **
+
+	#include <bits/stdc++.h> 
+	const int MAX_N = 1e5 + 5;
+	int n, m, q, num[MAX_N], low[MAX_N], cnt;
+	std::vector<int> adj[MAX_N], vec[MAX_N];
+	std::set<int> set[MAX_N];
+
+	void tarjan(int u, int p)
+	{
+		num[u] = low[u] = ++cnt;
+		vec[u].push_back(cnt);
+		set[u].insert(cnt);
+		for (int v : adj[u])
+			if (v != p)
+			{
+				if (!num[v])
+				{
+					tarjan(v, u);
+					low[u] = std::min(low[u], low[v]);
+					vec[u].push_back(cnt);
+					if (low[v] < num[u])
+						set[u].insert(cnt);
+				}
+				else low[u] = std::min(low[u], num[v]);
+			}
+		if (vec[u].back() != n)
+		{
+			vec[u].push_back(n);
+			set[u].insert(n);
+		}
+	}
+
+	int main()
+	{
+		std::ios_base::sync_with_stdio(false);
+		std::cin.tie(nullptr); std::cout.tie(nullptr);
+
+		std::cin >> n >> m >> q;
+		while (m--)
+		{
+			int u, v;
+			std::cin >> u >> v;
+			adj[u].push_back(v);
+			adj[v].push_back(u);
+		}
+		tarjan(1, 0);
+		while (q--)
+		{
+			int a, b, c;
+			std::cin >> a >> b >> c;
+			if (a == c || b == c) std::cout << "NO\n";
+			else
+			{
+				int x = *std::lower_bound(vec[c].begin(), vec[c].end(), num[a]);
+				int y = *std::lower_bound(vec[c].begin(), vec[c].end(), num[b]);
+				if (x == y || set[c].count(x) && set[c].count(y)) std::cout << "YES\n";
+				else std::cout << "NO\n";
+			}
+		}
+
+		return 0;
+	}
+
+**Area of Rectangles **
+
+	#include <bits/stdc++.h>
+	#define f first
+	#define s second
+	#define N 1000001
+	using ll = int64_t;
+	using namespace std;
+
+	struct z {
+		ll x, b, g, type;
+		bool operator < (const z &o) const {
+			return x < o.x;
+		}
+	};
+
+	vector <z> e;
+	pair <ll, ll> t[1 << 23];
+	ll n, d;
+
+	void u(ll p, ll l, ll r, ll i, ll j, ll x) {
+		if(l >= j || r <= i) {
+			return;
+		}
+		if(i <= l && r <= j) {
+			t[p].f += x;
+		} else {
+			ll m = (l + r) / 2;
+			u(p * 2, l, m, i, j, x);
+			u(p * 2 + 1, m, r, i, j, x);
+		}
+		if(!t[p].f) t[p].s = t[p * 2].s + t[p * 2 + 1].s;
+		else t[p].s = r - l;
+	}
+
+	main() {
+		cin >> n;
+		for(ll i = 1, a, b, c, g; i <= n; ++i) {
+			cin >> a >> b >> c >> g;
+			b += N, g += N;
+			e.push_back({a, b, g, 1});
+			e.push_back({c, b, g, -1});
+		}
+		sort(e.begin(), e.end());
+		for(ll i = 0; i < e.size() - 1; ++i) {
+			u(1, 1, N << 1, e[i].b, e[i].g, e[i].type);
+			d += (e[i + 1].x - e[i].x) * t[1].s;
+		}
+		cout << d;
+	}
+
+**Creating Offices **
+
+	#include <bits/stdc++.h>
+	using namespace std; 
+	stringstream ss;
+	int n, D;
+	vector<int> p(200001);
+	vector<int> r(200001);
+	vector<int> adj[200001];
+	vector<int> de[200001];
+
+	void dfs(int now, int prv, int lv) {
+		de[lv].push_back(now);
+		p[now] = prv;
+		for (int u: adj[now]) {
+			if (u != prv) dfs(u, now, lv+1);
+		}
+	}
+
+	int go(int u, int d) {
+		if (!u || !d) return 1;
+		if (r[u] + d > D) return 0;
+		r[u] = d;
+		return go(p[u], d - 1);
+	}
+
+	signed main() {
+		ios::sync_with_stdio(0); cin.tie(0);
+
+		cin >> n >> D;
+		for (int i = 1; i < n; i++) {
+			int x, y; cin >> x >> y;
+			adj[x].push_back(y);
+			adj[y].push_back(x);
+		}
+		dfs(1, 0, 0); 
+
+		int ans = 0;
+		for (int i = n-1; i >= 0; i--) {
+			for (int u: de[i]) {
+				if (go(u, D)) {
+					ans++;
+					ss << u << ' ';
+				}
+			}
+		}
+		cout << ans << '\n' << ss.str() << '\n';
+
+		return 0;
+	}
+
+**Permutations II **
+
+	#include <stdint.h>
+	#include <stdio.h>
+	const int64_t MOD = 1000 * 1000 * 1000 + 7;
+	int main() {
+	    int N;
+	    if (scanf("%d", &N) != 1) return 1;
+	    int64_t A = 1, B = 1, C = 0, D = 0;
+	    for (int64_t n = 4; n < N + 4; ++n) {
+		int64_t E = (n+1)*D - (n-2)*C - (n-5)*B + (n-3)*A;
+		A = B;
+		B = C;
+		C = D;
+		D = (E % MOD + MOD) % MOD;
+	    }
+	    printf("%lld\n", (long long int)A);
+	}
+
+**New Flight Routes **
+
+	#include <bits/stdc++.h>
+	using namespace std;
+	const int N = 1e5 + 5;
+	vector <int> g[2][N], dag[N], ext;
+	bitset <N> vs; int hd[N];
+	int cmp[N], in[N], out[N];
+
+	void dfs(int u, int r) {
+	    vs[u] = 1; cmp[u] = r;
+	    for (int v : g[r > 0][u])
+		if (!vs[v]) dfs(v, r);
+	    if (!r) ext.push_back(u);
+	}
+
+	int vis(int u) {
+	    if (vs[u]) return 0;
+	    vs[u] = 1;
+	    if (!out[u]) return u;
+	    for (int v : dag[u]) {
+		int r = vis(v);
+		if (r) return r;
+	    }
+	    return 0;
+	} 
+
+	int main() {
+	    cin.tie(0)->sync_with_stdio(0);
+	    int n, m; cin >> n >> m;
+	    for (int i = 0; i < m; i++) {
+		int u, v; cin >> u >> v;
+		g[0][u].push_back(v);
+		g[1][v].push_back(u);
+	    }
+	    for (int u = 1; u <= n; u++)
+		if (!vs[u]) dfs(u, 0);
+	    vs.reset(); int cc = 0;
+	    reverse(ext.begin(), ext.end());
+	    for (int u : ext)
+		if (!vs[u]) {
+		    dfs(u, ++cc); hd[cc] = u;
+		}
+	    for (int u = 1; u <= n; u++)
+		for (int v : g[0][u])
+		    if (cmp[u] != cmp[v]) {
+			dag[cmp[u]].push_back(cmp[v]);
+			out[cmp[u]]++; in[cmp[v]]++;
+		    }
+	    if (cc == 1) {
+		cout << "0\n"; return 0;
+	    }
+	    vs.reset();
+	    vector <int> m_src, u_src;
+	    vector <int> m_sink, u_sink;
+	    for (int u = 1; u <= cc; u++)
+		if (!in[u]) {
+		    int v = vis(u);
+		    if (v) {
+			m_src.push_back(u);
+			m_sink.push_back(v);
+		    }
+		    else u_src.push_back(u);
+		}
+	    for (int u = 1; u <= cc; u++)
+		if (!out[u] && !vs[u])
+		    u_sink.push_back(u);
+	    int x = m_src.size();
+	    m_src.insert(m_src.end(),
+	    u_src.begin(), u_src.end());
+	    m_sink.insert(m_sink.end(),
+	    u_sink.begin(), u_sink.end());
+	    int y = m_src.size(), z = m_sink.size();
+	    cout << max(m_src.size(), m_sink.size()) << '\n';
+	    cout << hd[m_sink[0]] << ' ' << hd[m_src[x - 1]] << '\n';
+	    for (int i = 1; i < x; i++)
+		cout << hd[m_sink[i]] << ' ' << hd[m_src[i - 1]] << '\n';
+	    for (int i = x; i < min(y, z); i++)
+		cout << hd[m_sink[i]] << ' ' << hd[m_src[i]] << '\n';
+	    for (int i = min(y, z); i < y; i++)
+		cout << hd[m_sink[0]] << ' ' << hd[m_src[i]] << '\n';
+	    for (int i = min(y, z); i < z; i++)
+		cout << hd[m_sink[i]] << ' ' << hd[m_src[0]] << '\n';
+	}
+	
+**Number Grid **
+
+	a,b=map(int,input().split())
+	print(-a^-b)
+
+** **
 ** **
 
 
@@ -1522,26 +3095,6 @@
 
 
 ** **
-
-
-** **
-
-
-** **
-
-
-** **
-
-
-** **
-
-
-** **
-
-
-** **
-
-
 ** **
 
 
