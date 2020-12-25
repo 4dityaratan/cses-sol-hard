@@ -23,6 +23,7 @@
 			}
 	}
   
+  
 **Sliding Cost ** 
 
 	#include <bits/stdc++.h>
